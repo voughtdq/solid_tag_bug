@@ -4,7 +4,7 @@ defmodule SolidTagBug.FS do
   @impl true
   def read_template_file("layout", _) do
     """
-    {% render "world" %}
+    {% render "world", name: name %}
     """
   end
 
@@ -50,6 +50,6 @@ defmodule SolidTagBug do
   def render_layout(attrs \\ %{}) do
     template = FS.read_template_file("layout", [])
     parsed = Solid.parse!(template, parser: SolidTagBug.Parser)
-    Solid.render!(parsed, attrs, file_system: {SolidTagBug.FS, []})
+    Solid.render!(parsed, attrs, file_system: {SolidTagBug.FS, []}, parser: SolidTagBug.Parser)
   end
 end
