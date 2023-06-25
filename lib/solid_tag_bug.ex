@@ -15,6 +15,19 @@ defmodule SolidTagBug.FS do
     """
   end
 
+  def read_template_file("layout_world_world", _) do
+    """
+    {% render "world_world", name: name %}
+    """
+  end
+
+  def read_template_file("world_world", _) do
+    """
+    {% world %}! {{ name }} was here.
+    {% render "world", name: "Tim" %}
+    """
+  end
+
   def read_template_file(_, _) do
     raise "This is only a test."
   end
@@ -52,4 +65,11 @@ defmodule SolidTagBug do
     parsed = Solid.parse!(template, parser: SolidTagBug.Parser)
     Solid.render!(parsed, attrs, file_system: {SolidTagBug.FS, []}, parser: SolidTagBug.Parser)
   end
+
+  def render_world_world(attrs \\ %{}) do
+    template = FS.read_template_file("layout_world_world", [])
+    parsed = Solid.parse!(template, parser: SolidTagBug.Parser)
+    Solid.render!(parsed, attrs, file_system: {SolidTagBug.FS, []}, parser: SolidTagBug.Parser)
+  end
+
 end
